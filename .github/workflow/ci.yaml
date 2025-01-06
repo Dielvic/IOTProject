@@ -1,0 +1,20 @@
+name: 🤞 Trigger remote CI pipeline on merge on dev
+
+on:
+  pull_request:
+    branches:
+      - develop
+    types: [closed]
+
+
+jobs:
+  trigger-cd:
+    if: ${{ github.event.pull_request.merged }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set tag merged by ${{ github.actor }}
+      run: |
+        export SHORT_SHA=$(echo ${{ github.sha }} | head -c8)
+        echo $SHORT_SHA
+        echo "SHORT_SHA=$SHORT_SHA" >> $GITHUB_ENV
+      shell: bash
