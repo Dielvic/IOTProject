@@ -8,13 +8,21 @@ on:
 
 
 jobs:
-  trigger-cd:
+  build:
     if: ${{ github.event.pull_request.merged }}
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v4
     - name: Set tag merged by ${{ github.actor }}
       run: |
         export SHORT_SHA=$(echo ${{ github.sha }} | head -c8)
         echo $SHORT_SHA
         echo "SHORT_SHA=$SHORT_SHA" >> $GITHUB_ENV
       shell: bash
+
+   # Ajouter une étape de vérification     
+    - name: Debug information
+      run: |
+        echo "Event name: ${{ github.event_name }}"
+        echo "SHA: ${{ github.sha }}"
+        echo "Short SHA: ${{ env.SHORT_SHA }}"      
